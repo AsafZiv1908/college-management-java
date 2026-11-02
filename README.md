@@ -1,32 +1,63 @@
-# College Management — Java
+# College Management in Java
 
-A Java console application for managing a college's lecturers, departments and committees. Academic project by Asaf Ziv and Iness Goldes.
+A console application for managing college lecturers, departments and academic committees. The project demonstrates object-oriented modelling, inheritance, collection management, custom exceptions and file persistence in Java.
+
+**Authors:** [Asaf Ziv](https://github.com/AsafZiv1908) and Iness Goldes. Developed as an academic project.
 
 ## Features
 
-- Lecturer, doctor and professor models with inheritance.
-- Departments, committee membership and chairman assignment.
-- Salary averages and comparisons of lecturers and committees.
-- Custom exceptions and local serialization for saving college data.
+- Add lecturers, doctors and professors, and assign lecturers to departments.
+- Create committees, manage membership and update committee chairpersons.
+- Compare research output and committees using dedicated comparators.
+- Calculate average salaries for a college or department.
+- Save and restore application data using Java object serialization.
 
-## Run
+## Technology and design
 
-Install a JDK (17 or newer), then open PowerShell in this repository:
+The application uses Java and the standard library, with no external dependencies. `Lecturer`, `Doctor` and `Professor` model the academic staff hierarchy. `Department` and `Committee` model group membership, while `MainManagement` coordinates the console operations. Domain-specific exceptions report invalid input and unsupported operations.
+
+```text
+CollegeManagementApp  →  MainManagement
+                             ├── Lecturer
+                             │     ├── Doctor
+                             │     └── Professor
+                             ├── Department
+                             └── Committee
+```
+
+## Run locally
+
+Requirements: **JDK 17 or newer**. The included scripts use Windows PowerShell.
 
 ```powershell
+git clone https://github.com/AsafZiv1908/college-management-java.git
+cd college-management-java
 .\run.ps1
 ```
 
-The script compiles the source and launches `college.management.CollegeManagementApp`. Enter a college name and use the numbered menu; choose `0` to save and exit. Data is saved as `<college-name>.ser` in the current working directory and is excluded from Git.
+The script compiles the source and launches `college.management.CollegeManagementApp`. Enter a college name, then select a numbered menu operation. Choose `0` to save and exit.
 
-To compile only, run `.\build.ps1`. No external Java libraries are required.
+To compile without launching:
 
-## Repository structure
+```powershell
+.\build.ps1
+```
 
-- `src/college/management/`: application and domain classes.
-- `src/college/management/exceptions/`: domain exceptions.
-- `build.ps1` and `run.ps1`: Windows build and launch scripts.
+Data is stored in `<college-name>.ser` in the working directory. Saved data and compiled classes are excluded from Git. Use only data files created by your own copy of the application.
 
-## Preparation notes
+## Source map
 
-The original personal package and entry-point names were replaced with descriptive names. Author credits are retained; personal identity numbers were removed from source comments. Existing serialized data from the original package is not compatible with the renamed Java classes; start with a fresh data file. This repository contains the original file-based version; the PostgreSQL extension is maintained separately in `college-management-database`.
+| Location | Purpose |
+| --- | --- |
+| [CollegeManagementApp.java](src/college/management/CollegeManagementApp.java) | Entry point and numbered console menu |
+| [MainManagement.java](src/college/management/MainManagement.java) | College operations, lookups and persistence |
+| [Domain classes](src/college/management/) | Staff hierarchy, departments, committees and comparators |
+| [Exceptions](src/college/management/exceptions/) | Domain-specific error types |
+
+## Verification and scope
+
+The project was compiled with JDK 23 during portfolio preparation. Startup, save, reload and exit were checked. These checks do not cover every interactive menu path.
+
+This is an academic console application. The package was renamed to `college.management`, so serialized files from the original package are not compatible with this version.
+
+The companion [PostgreSQL version](https://github.com/AsafZiv1908/college-management-database) extends the same domain with relational storage and JDBC.
